@@ -3,28 +3,7 @@
 ====================================================
 
 Repositorio GitHub:
-https://github.com/TU_USUARIO/auth-api
+https://github.com/salaminamagdalena2014-hub/EDUARDOMACHADO_AA5_EV01
 
-----------------------------------------------------
-INSTRUCCIONES PARA SUBIR EL PROYECTO A GITHUB:
-----------------------------------------------------
 
-1. Crear un repositorio en https://github.com
-   - Nombre sugerido: auth-api
-   - Visibilidad: Público
 
-2. Desde la carpeta del proyecto, ejecutar:
-
-   git init
-   git add .
-   git commit -m "feat: implementacion inicial servicio web autenticacion"
-   git branch -M main
-   git remote add origin https://github.com/TU_USUARIO/auth-api.git
-   git push -u origin main
-
-3. Reemplazar el enlace de arriba con la URL real del repositorio.
-
-====================================================
-Evidencia: GA7-220501096-AA5-EV01
-Programa: Análisis y Desarrollo de Software - SENA
-====================================================
