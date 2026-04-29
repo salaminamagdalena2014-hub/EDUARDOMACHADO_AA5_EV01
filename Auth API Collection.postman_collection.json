@@ -1,0 +1,215 @@
+{
+  "info": {
+    "name": "Auth API Collection - GA7-220501096-AA5-EV01",
+    "description": "Colección de Postman para probar la API de autenticación de usuarios. Incluye endpoints para registro, login y verificación del servicio.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Información del Servicio",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/",
+          "host": ["{{base_url}}"],
+          "path": ["/"]
+        },
+        "description": "Verifica que el servicio esté activo y obtiene información básica de la API."
+      },
+      "response": []
+    },
+    {
+      "name": "Registro de Usuario - Éxito",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"testuser\",\n  \"contrasena\": \"password123\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/registro",
+          "host": ["{{base_url}}"],
+          "path": ["/api/auth/registro"]
+        },
+        "description": "Registra un nuevo usuario en el sistema. Espera usuario y contraseña válidos."
+      },
+      "response": []
+    },
+    {
+      "name": "Registro de Usuario - Campos faltantes",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"testuser\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/registro",
+          "host": ["{{base_url}}"],
+          "path": ["/api/auth/registro"]
+        },
+        "description": "Prueba el error cuando faltan campos obligatorios (contraseña)."
+      },
+      "response": []
+    },
+    {
+      "name": "Registro de Usuario - Contraseña corta",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"testuser2\",\n  \"contrasena\": \"123\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/registro",
+          "host": ["{{base_url}}"],
+          "path": ["/api/auth/registro"]
+        },
+        "description": "Prueba el error cuando la contraseña tiene menos de 6 caracteres."
+      },
+      "response": []
+    },
+    {
+      "name": "Registro de Usuario - Usuario existente",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"testuser\",\n  \"contrasena\": \"password123\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/registro",
+          "host": ["{{base_url}}"],
+          "path": ["/api/auth/registro"]
+        },
+        "description": "Prueba el error cuando se intenta registrar un usuario que ya existe."
+      },
+      "response": []
+    },
+    {
+      "name": "Inicio de Sesión - Éxito",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"testuser\",\n  \"contrasena\": \"password123\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/login",
+          "host": ["{{base_url}}"],
+          "path": ["/api/auth/login"]
+        },
+        "description": "Inicia sesión con credenciales válidas. Retorna un token JWT."
+      },
+      "response": []
+    },
+    {
+      "name": "Inicio de Sesión - Campos faltantes",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"testuser\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/login",
+          "host": ["{{base_url}}"],
+          "path": ["/api/auth/login"]
+        },
+        "description": "Prueba el error cuando faltan campos obligatorios."
+      },
+      "response": []
+    },
+    {
+      "name": "Inicio de Sesión - Credenciales incorrectas",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"testuser\",\n  \"contrasena\": \"wrongpassword\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/login",
+          "host": ["{{base_url}}"],
+          "path": ["/api/auth/login"]
+        },
+        "description": "Prueba el error cuando las credenciales son incorrectas."
+      },
+      "response": []
+    },
+    {
+      "name": "Inicio de Sesión - Usuario no existe",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"nonexistent\",\n  \"contrasena\": \"password123\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/login",
+          "host": ["{{base_url}}"],
+          "path": ["/api/auth/login"]
+        },
+        "description": "Prueba el error cuando el usuario no existe."
+      },
+      "response": []
+    }
+  ]
+}

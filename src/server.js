@@ -1,54 +1,145 @@
 /**
  * ============================================================
- * SERVICIO WEB - REGISTRO E INICIO DE SESIÓN (AUTH API)
- * Evidencia GA7-220501096-AA5-EV01
+ * SERVIDOR PRINCIPAL - EO APP API
+ * Archivo: src/server.js
  * ============================================================
- * Descripción: API REST para registro y autenticación de usuarios.
- * Tecnologías: Node.js, Express, bcryptjs, JWT
+ * Descripción: Servidor Express para la API de gestión financiera
+ * Tecnologías: Node.js, Express, MySQL, JWT, bcryptjs
  * ============================================================
  */
 
-// Importación de módulos necesarios
-const express = require('express');       // Framework web para Node.js
-const authRoutes = require('./routes/authRoutes'); // Rutas de autenticación
+require('dotenv').config(); // Cargar variables de entorno
+const express = require('express');
+const pool = require('./config/database');
 
-// Inicialización de la aplicación Express
+// Middlewares
+const errorHandler = require('./middleware/errorHandler');
+
+// Rutas
+const authRoutes = require('./routes/authRoutes');
+const usuariosRoutes = require('./routes/usuariosRoutes');
+const categoriasRoutes = require('./routes/categoriasRoutes');
+const transaccionesRoutes = require('./routes/transaccionesRoutes');
+const metasRoutes = require('./routes/metasRoutes');
+const reportesRoutes = require('./routes/reportesRoutes');
+
+// Inicializar Express
 const app = express();
 
 // ─── MIDDLEWARES GLOBALES ────────────────────────────────────────────────────
 
-// Permite que la API reciba y procese cuerpos de solicitud en formato JSON
+// Middleware para parsear JSON
 app.use(express.json());
 
-// ─── RUTAS ───────────────────────────────────────────────────────────────────
+// Middleware para parsear datos urlencoded
+app.use(express.urlencoded({ extended: true }));
 
-// Todas las rutas de autenticación tendrán el prefijo /api/auth
-app.use('/api/auth', authRoutes);
+// ─── RUTAS PÚBLICAS ──────────────────────────────────────────────────────────
 
-// Ruta raíz: verifica que el servidor está en línea
+/**
+ * Ruta raíz: información de la API
+ */
 app.get('/', (req, res) => {
   res.json({
-    mensaje: 'Servicio Web de Autenticación activo',
+    success: true,
+    message: 'API RESTful - EO App (Gestión Financiera Personal)',
     version: '1.0.0',
+    timestamp: new Date().toISOString(),
     endpoints: {
-      registro: 'POST /api/auth/registro',
-      login: 'POST /api/auth/login',
+      auth: {
+        register: 'POST /api/auth/register',
+        login: 'POST /api/auth/login',
+        logout: 'POST /api/auth/logout (requiere token)',
+      },
+      usuarios: {
+        obtener: 'GET /api/usuarios/:id (requiere token)',
+        actualizar: 'PUT /api/usuarios/:id (requiere token)',
+        cambiarPassword: 'PUT /api/usuarios/:id/password (requiere token)',
+        desactivar: 'DELETE /api/usuarios/:id (requiere token)',
+      },
+      categorias: {
+        listar: 'GET /api/categorias (requiere token)',
+        crear: 'POST /api/categorias (requiere token)',
+        actualizar: 'PUT /api/categorias/:id (requiere token)',
+        eliminar: 'DELETE /api/categorias/:id (requiere token)',
+      },
+      transacciones: {
+        listar: 'GET /api/transacciones (requiere token)',
+        obtener: 'GET /api/transacciones/:id (requiere token)',
+        crear: 'POST /api/transacciones (requiere token)',
+        actualizar: 'PUT /api/transacciones/:id (requiere token)',
+        eliminar: 'DELETE /api/transacciones/:id (requiere token)',
+      },
+      metas: {
+        listar: 'GET /api/metas (requiere token)',
+        obtener: 'GET /api/metas/:id (requiere token)',
+        crear: 'POST /api/metas (requiere token)',
+        actualizar: 'PUT /api/metas/:id (requiere token)',
+        cancelar: 'DELETE /api/metas/:id (requiere token)',
+        asociarTransaccion: 'POST /api/metas/:id/transacciones (requiere token)',
+        desasociarTransaccion: 'DELETE /api/metas/:id/transacciones/:id_transaccion (requiere token)',
+      },
+      reportes: {
+        resumenMensual: 'GET /api/reportes/resumen-mensual (requiere token)',
+        gastosPorCategoria: 'GET /api/reportes/gastos-por-categoria (requiere token)',
+        progresoMetas: 'GET /api/reportes/progreso-metas (requiere token)',
+      },
     },
   });
 });
 
-// ─── MANEJO DE RUTAS NO ENCONTRADAS ─────────────────────────────────────────
+// ─── RUTAS DE LA API ──────────────────────────────────────────────────────────
+
+// Rutas de autenticación
+app.use('/api/auth', authRoutes);
+
+// Rutas de usuarios
+app.use('/api/usuarios', usuariosRoutes);
+
+// Rutas de categorías
+app.use('/api/categorias', categoriasRoutes);
+
+// Rutas de transacciones
+app.use('/api/transacciones', transaccionesRoutes);
+
+// Rutas de metas
+app.use('/api/metas', metasRoutes);
+
+// Rutas de reportes
+app.use('/api/reportes', reportesRoutes);
+
+// ─── MANEJO DE RUTAS NO ENCONTRADAS ──────────────────────────────────────────
+
 app.use((req, res) => {
-  res.status(404).json({ error: 'Ruta no encontrada' });
+  res.status(404).json({
+    success: false,
+    message: 'Ruta no encontrada',
+    data: null,
+  });
 });
+
+// ─── MIDDLEWARE GLOBAL DE MANEJO DE ERRORES ──────────────────────────────────
+
+app.use(errorHandler);
 
 // ─── INICIO DEL SERVIDOR ─────────────────────────────────────────────────────
 
-// Puerto en el que escuchará el servidor (variable de entorno o 3000 por defecto)
-const PUERTO = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
-app.listen(PUERTO, () => {
-  console.log(`✅ Servidor corriendo en http://localhost:${PUERTO}`);
+app.listen(PORT, () => {
+  console.log(`
+╔═════════════════════════════════════════════════════════╗
+║                                                         ║
+║          🚀 EO APP API - SERVIDOR INICIADO 🚀          ║
+║                                                         ║
+║  URL:     http://localhost:${PORT}                        ║
+║  Entorno: ${process.env.NODE_ENV || 'development'}                   ║
+║  Base de datos: ${process.env.DB_NAME || 'eo_app_db'}                ║
+║                                                         ║
+║  ✅ Listo para recibir solicitudes...                  ║
+║                                                         ║
+╚═════════════════════════════════════════════════════════╝
+  `);
 });
 
-module.exports = app; // Exportamos para pruebas o uso externo
+module.exports = app;

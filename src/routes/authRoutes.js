@@ -3,37 +3,34 @@
  * RUTAS DE AUTENTICACIÓN
  * Archivo: routes/authRoutes.js
  * ============================================================
- * Descripción: Define los endpoints del servicio web de
- * autenticación y los conecta con sus controladores.
- *
- * Endpoints disponibles:
- *   POST /api/auth/registro  → Registrar nuevo usuario
- *   POST /api/auth/login     → Iniciar sesión
+ * Descripción: Define los endpoints de autenticación
  * ============================================================
  */
 
 const express = require('express');
-const router = express.Router(); // Creamos un enrutador de Express
-
-// Importamos los controladores que manejan la lógica de negocio
-const { registrar, iniciarSesion } = require('../controllers/authController');
-
-// ─── DEFINICIÓN DE RUTAS ──────────────────────────────────────────────────────
+const router = express.Router();
+const { register, login, logout } = require('../controllers/authController');
+const { verificarToken } = require('../middleware/authMiddleware');
 
 /**
- * @route   POST /api/auth/registro
- * @desc    Registrar un nuevo usuario en el sistema
+ * @route   POST /api/auth/register
+ * @desc    Registrar un nuevo usuario
  * @access  Público
- * @body    { usuario: string, contrasena: string }
  */
-router.post('/registro', registrar);
+router.post('/register', register);
 
 /**
  * @route   POST /api/auth/login
- * @desc    Iniciar sesión con credenciales existentes
+ * @desc    Iniciar sesión
  * @access  Público
- * @body    { usuario: string, contrasena: string }
  */
-router.post('/login', iniciarSesion);
+router.post('/login', login);
+
+/**
+ * @route   POST /api/auth/logout
+ * @desc    Cerrar sesión
+ * @access  Privado
+ */
+router.post('/logout', verificarToken, logout);
 
 module.exports = router;
