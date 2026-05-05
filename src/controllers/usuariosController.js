@@ -82,8 +82,15 @@ const actualizar = async (req, res, next) => {
       });
     }
 
+    // Preparar datos de actualización
+    const datosActualizar = {
+      nombre,
+      apellido,
+      cedula,
+    };
+
     // Actualizar usuario
-    const actualizado = await usuarioModel.actualizar(id, nombre, apellido, cedula);
+    const actualizado = await usuarioModel.actualizar(id, datosActualizar);
     if (!actualizado) {
       return res.status(404).json({
         success: false,

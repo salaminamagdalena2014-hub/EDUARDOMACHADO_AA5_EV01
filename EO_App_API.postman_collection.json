@@ -186,6 +186,29 @@
               ]
             }
           }
+        },
+        {
+          "name": "DELETE Desactivar Cuenta",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/usuarios/{{USER_ID}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "{{USER_ID}}"
+              ]
+            }
+          }
         }
       ]
     },
@@ -240,6 +263,60 @@
               "path": [
                 "api",
                 "categorias"
+              ]
+            }
+          }
+        },
+        {
+          "name": "PUT Actualizar",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Freelance Actualizado\",\n  \"tipo\": \"ingreso\",\n  \"color\": \"#10b981\",\n  \"icono\": \"briefcase\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/categorias/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "categorias",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "DELETE Eliminar",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/categorias/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "categorias",
+                "1"
               ]
             }
           }
@@ -300,6 +377,83 @@
               ]
             }
           }
+        },
+        {
+          "name": "GET Obtener",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/transacciones/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "transacciones",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "PUT Actualizar",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_categoria\": 5,\n  \"tipo\": \"gasto\",\n  \"monto\": 60000.00,\n  \"descripcion\": \"Almuerzo actualizado\",\n  \"fecha\": \"2024-04-29\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/transacciones/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "transacciones",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "DELETE Eliminar",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/transacciones/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "transacciones",
+                "1"
+              ]
+            }
+          }
         }
       ]
     },
@@ -354,6 +508,140 @@
               "path": [
                 "api",
                 "metas"
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Obtener",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/metas/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "PUT Actualizar",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Viaje a Disney Actualizado\",\n  \"descripcion\": \"Viaje familiar actualizado\",\n  \"monto_objetivo\": 6000000.00,\n  \"fecha_inicio\": \"2024-01-01\",\n  \"fecha_limite\": \"2025-12-31\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/metas/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "DELETE Cancelar",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/metas/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST Asociar Transacción",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_transaccion\": 1\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/metas/1/transacciones",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "1",
+                "transacciones"
+              ]
+            }
+          }
+        },
+        {
+          "name": "DELETE Desasociar Transacción",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/metas/1/transacciones/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "1",
+                "transacciones",
+                "1"
               ]
             }
           }
